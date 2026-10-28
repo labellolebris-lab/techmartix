@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Tech Martix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: 'Barlow', sans-serif; min-height: 100vh; }
+
+        /* LOGIN */
+        .login-wrap {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: #080808;
+            border: 1px solid #1c1c1c;
+            padding: 52px 48px;
+            width: 100%; max-width: 420px;
+        }
+        .login-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900; font-size: 36px;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .login-sub { font-size: 13px; color: #444; margin-bottom: 40px; }
+
+        label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.16em; color: #444;
+            display: block; margin-bottom: 8px;
+        }
+
+        input, textarea, select {
+            background: #000; border: 1px solid #1c1c1c;
+            color: #fff; font-family: 'Barlow', sans-serif;
+            font-size: 15px; padding: 14px 16px; width: 100%;
+            outline: none; transition: border-color 0.2s; appearance: none;
+            margin-bottom: 20px;
+        }
+        input:focus, textarea:focus, select:focus { border-color: #fff; }
+        input::placeholder, textarea::placeholder { color: #2a2a2a; }
+        textarea { resize: vertical; min-height: 80px; }
+        select option { background: #000; }
+
+        .btn {
+            width: 100%; background: #fff; color: #000; border: none;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px; font-weight: 900; letter-spacing: 0.16em;
+            text-transform: uppercase; padding: 16px 32px;
+            cursor: pointer; transition: background 0.2s, color 0.2s, outline 0.2s;
+        }
+        .btn:hover { background: #000; color: #fff; outline: 1px solid #fff; }
+        .btn-sm {
+            width: auto; padding: 10px 20px; font-size: 11px;
+        }
+        .btn-danger {
+            background: #000; color: #555; outline: 1px solid #1a1a1a;
+        }
+        .btn-danger:hover { color: #ff4444; outline-color: #ff4444; background: #000; }
+
+        .login-err {
+            font-size: 12px; color: #ff4444;
+            margin-bottom: 16px; display: none;
+        }
+
+        /* ADMIN */
+        #admin-panel { display: none; }
+
+        .admin-nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid #1c1c1c; z-index: 1000;
+            display: flex; align-items: center;
+        }
+        .admin-nav-inner {
+            max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 32px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .admin-nav-brand {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900; font-size: 16px;
+            letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
+        }
+        .admin-nav-brand span { color: #333; }
+        .admin-logout {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: #444; cursor: pointer; border: 1px solid transparent;
+            padding: 6px 14px; background: none;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .admin-logout:hover { color: #fff; border-color: #fff; }
+
+        .admin-content {
+            padding-top: 52px;
+            max-width: 1200px; margin: 0 auto; padding: 72px 32px 100px;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex; gap: 0;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 52px;
+        }
+        .tab {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700; font-size: 13px;
+            letter-spacing: 0.14em; text-transform: uppercase;
+            color: #444; padding: 14px 28px;
+            border-bottom: 2px solid transparent;
+            cursor: pointer; transition: color 0.2s;
+        }
+        .tab.active { color: #fff; border-bottom-color: #fff; }
+        .tab:hover { color: #fff; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* SECTION TITLE */
+        .section-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900; font-size: 42px;
+            letter-spacing: 0.04em; text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .section-sub { font-size: 13px; color: #444; margin-bottom: 40px; }
+
+        /* CARD */
+        .card {
+            background: #080808; border: 1px solid #1c1c1c;
+            padding: 36px 36px;
+            margin-bottom: 24px;
+        }
+        .card-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700; font-size: 16px;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: #888; margin-bottom: 28px;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* ITEM LIST */
+        .item-list { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr auto;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 20px;
+            background: #050505;
+            border: 1px solid #111;
+            transition: border-color 0.2s;
+        }
+        .item-row:hover { border-color: #1c1c1c; }
+
+        .item-num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900; font-size: 22px; color: #1a1a1a;
+        }
+        .item-main {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700; font-size: 17px;
+            text-transform: uppercase; color: #fff;
+        }
+        .item-sub { font-size: 12px; color: #333; margin-top: 2px; }
+        .item-tag {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: #333; border: 1px solid #1a1a1a; padding: 5px 10px;
+        }
+        .item-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+        /* STATUS */
+        .status-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 18px;
+            border: 1px solid #1a1a1a; margin-bottom: 32px;
+            font-size: 13px;
+        }
+        .status-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #1a1a1a; flex-shrink: 0;
+        }
+        .status-dot.ok { background: #22c55e; }
+        .status-dot.warn { background: #f59e0b; }
+        .status-dot.err { background: #ef4444; }
+        .status-msg { color: #555; font-size: 12px; }
+
+        /* CONFIG */
+        .config-note {
+            font-size: 12px; color: #2a2a2a; line-height: 1.8;
+            margin-top: 12px;
+        }
+        code {
+            background: #0d0d0d; border: 1px solid #1a1a1a;
+            padding: 2px 8px; font-family: monospace; font-size: 12px; color: #666;
+        }
+
+        .divider { border: none; border-top: 1px solid #111; margin: 32px 0; }
+
+        /* SYNC BADGE */
+        .sync-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 5px 12px; border: 1px solid #1a1a1a; color: #555;
+            margin-left: 12px;
+        }
+        .sync-badge.local { border-color: #f59e0b; color: #f59e0b; }
+        .sync-badge.github { border-color: #22c55e; color: #22c55e; }
+
+        @media (max-width: 768px) {
+            .admin-content { padding: 72px 20px 80px; }
+            .form-row { grid-template-columns: 1fr; }
+            .item-row { grid-template-columns: 40px 1fr auto; }
+            .item-tag { display: none; }
+            .login-box { padding: 36px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div class="login-wrap" id="login-wrap">
+    <div class="login-box">
+        <div class="login-title">Admin</div>
+        <p class="login-sub">Tech Martix — Panel de gestion</p>
+        <div class="login-err" id="login-err">Mot de passe incorrect.</div>
+        <label for="pwd">Mot de passe</label>
+        <input type="password" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter') login()">
+        <button class="btn" onclick="login()">Connexion</button>
+    </div>
+</div>
+
+<!-- ── ADMIN PANEL ── -->
+<div id="admin-panel">
+
+    <nav class="admin-nav">
+        <div class="admin-nav-inner">
+            <div class="admin-nav-brand">Tech Martix <span>/ Admin</span></div>
+            <button class="admin-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Deconnexion</button>
+        </div>
+    </nav>
+
+    <div class="admin-content">
+
+        <!-- TABS -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('soirees')">Soirees</div>
+            <div class="tab" onclick="switchTab('musiques')">Musiques</div>
+            <div class="tab" onclick="switchTab('config')">Configuration</div>
+        </div>
+
+        <!-- ── SOIREES ── -->
+        <div class="tab-content active" id="tab-soirees">
+            <div class="section-title">Soirees</div>
+            <p class="section-sub">Gere les dates affichees sur la page d'accueil.</p>
+
+            <div id="gh-status-soirees" class="status-bar">
+                <div class="status-dot" id="dot-soirees"></div>
+                <span class="status-msg" id="msg-soirees">Verification de la connexion GitHub...</span>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Ajouter une soiree</div>
+                <div class="form-row">
+                    <div>
+                        <label>Jour (ex: 12, TBA)</label>
+                        <input type="text" id="e-jour" placeholder="12">
+                    </div>
+                    <div>
+                        <label>Mois / Annee (ex: JAN 2026)</label>
+                        <input type="text" id="e-mois" placeholder="JAN 2026">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Titre de la soiree</label>
+                        <input type="text" id="e-titre" placeholder="Soiree electronique">
+                    </div>
+                    <div>
+                        <label>Lieu</label>
+                        <input type="text" id="e-lieu" placeholder="Cotes d'Armor — Club X">
+                    </div>
+                </div>
+                <label>Tag (ex: A venir, Sold Out)</label>
+                <input type="text" id="e-tag" placeholder="A venir">
+                <button class="btn" onclick="addEvent()"><i class="fa-solid fa-plus"></i> Ajouter</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Soirees enregistrees</div>
+                <div class="item-list" id="events-list">
+                    <p style="color:#333;font-size:13px;">Chargement...</p>
+                </div>
+                <hr class="divider">
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <button class="btn" style="flex:1;min-width:200px;" onclick="saveEvents(event)">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Sauvegarder
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="resetEvents()"><i class="fa-solid fa-trash"></i> Tout supprimer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── MUSIQUES ── -->
+        <div class="tab-content" id="tab-musiques">
+            <div class="section-title">Musiques</div>
+            <p class="section-sub">Gere les tracks affiches sur la page musique.</p>
+
+            <div id="gh-status-musiques" class="status-bar">
+                <div class="status-dot" id="dot-musiques"></div>
+                <span class="status-msg" id="msg-musiques">Verification de la connexion GitHub...</span>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Ajouter un track</div>
+                <div class="form-row">
+                    <div>
+                        <label>Titre</label>
+                        <input type="text" id="t-titre" placeholder="Track Name">
+                    </div>
+                    <div>
+                        <label>Genre</label>
+                        <input type="text" id="t-genre" placeholder="Tech House">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Annee</label>
+                        <input type="text" id="t-annee" placeholder="2025">
+                    </div>
+                    <div>
+                        <label>Duree (ex: 6:24)</label>
+                        <input type="text" id="t-duree" placeholder="6:24">
+                    </div>
+                </div>
+                <label>Lien (SoundCloud / YouTube / Mixcloud)</label>
+                <input type="text" id="t-lien" placeholder="https://soundcloud.com/...">
+                <button class="btn" onclick="addTrack()"><i class="fa-solid fa-plus"></i> Ajouter</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Tracks enregistres</div>
+                <div class="item-list" id="tracks-list">
+                    <p style="color:#333;font-size:13px;">Chargement...</p>
+                </div>
+                <hr class="divider">
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <button class="btn" style="flex:1;min-width:200px;" onclick="saveTracks(event)">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Sauvegarder
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="resetTracks()"><i class="fa-solid fa-trash"></i> Tout supprimer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── CONFIG ── -->
+        <div class="tab-content" id="tab-config">
+            <div class="section-title">Configuration</div>
+            <p class="section-sub">Parametres de connexion au repo GitHub. Ces donnees sont stockees dans ton navigateur uniquement.</p>
+
+            <div class="card">
+                <div class="card-title">GitHub</div>
+
+                <label>Nom d'utilisateur GitHub</label>
+                <input type="text" id="cfg-user" placeholder="ton-username">
+
+                <label>Nom du repo</label>
+                <input type="text" id="cfg-repo" placeholder="techmartix-site">
+
+                <label>Branche</label>
+                <input type="text" id="cfg-branch" placeholder="main">
+
+                <label>Token GitHub (Personal Access Token)</label>
+                <input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+
+                <p class="config-note">
+                    Pour generer un token : GitHub → Settings → Developer settings → Personal access tokens → Generate new token.<br>
+                    Coche uniquement <code>repo</code> (acces complet aux repos publics/prives).<br><br>
+                    Tes fichiers <code>events.json</code> et <code>music.json</code> doivent etre a la racine du repo.<br><br>
+                    <strong style="color:#f59e0b;">Sans GitHub configure</strong>, les modifications sont sauvegardees localement dans le navigateur et visibles immediatement sur index.html (meme domaine).
+                </p>
+
+                <hr class="divider">
+
+                <label>Mot de passe admin (modifier)</label>
+                <input type="password" id="cfg-pwd" placeholder="Nouveau mot de passe">
+
+                <hr class="divider">
+                <button class="btn" onclick="saveConfig()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer la configuration</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ── CONFIG HARDCODEE ── Modifie ces valeurs ou configure via l'onglet Config
+    const GITHUB_USER   = 'labellolebris-lab';
+    const GITHUB_REPO   = 'techmatrix';
+    const GITHUB_BRANCH = 'main';
+    const GITHUB_TOKEN  = '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';
+    const DEFAULT_PWD   = 'hzvdbiz@xer';
+
+    function getConfig() {
+        // Priorite : localStorage (modifie via UI) > constantes hardcodees
+        return {
+            user:   localStorage.getItem('gh_user')   || GITHUB_USER,
+            repo:   localStorage.getItem('gh_repo')   || GITHUB_REPO,
+            branch: localStorage.getItem('gh_branch') || GITHUB_BRANCH,
+            token:  localStorage.getItem('gh_token')  || GITHUB_TOKEN,
+            pwd:    localStorage.getItem('admin_pwd') || DEFAULT_PWD
+        };
+    }
+
+    function login() {
+        const val = document.getElementById('pwd').value;
+        const cfg = getConfig();
+        if (val === cfg.pwd) {
+            document.getElementById('login-wrap').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            loadAll();
+        } else {
+            document.getElementById('login-err').style.display = 'block';
+        }
+    }
+
+    function logout() {
+        document.getElementById('login-wrap').style.display = 'flex';
+        document.getElementById('admin-panel').style.display = 'none';
+        document.getElementById('pwd').value = '';
+    }
+
+    function switchTab(name) {
+        document.querySelectorAll('.tab').forEach((t, i) => {
+            const names = ['soirees', 'musiques', 'config'];
+            t.classList.toggle('active', names[i] === name);
+        });
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    function saveConfig() {
+        const user   = document.getElementById('cfg-user').value.trim();
+        const repo   = document.getElementById('cfg-repo').value.trim();
+        const branch = document.getElementById('cfg-branch').value.trim() || 'main';
+        const token  = document.getElementById('cfg-token').value.trim();
+        const pwd    = document.getElementById('cfg-pwd').value.trim();
+
+        if (user)  localStorage.setItem('gh_user', user);
+        if (repo)  localStorage.setItem('gh_repo', repo);
+        localStorage.setItem('gh_branch', branch);
+        if (token) localStorage.setItem('gh_token', token);
+        if (pwd)   localStorage.setItem('admin_pwd', pwd);
+
+        alert('Configuration enregistree !');
+        checkGitHub();
+    }
+
+    // ── DATA ──
+    let eventsData = [];
+    let tracksData = [];
+
+    async function loadAll() {
+        const cfg = getConfig();
+        document.getElementById('cfg-user').value   = cfg.user;
+        document.getElementById('cfg-repo').value   = cfg.repo;
+        document.getElementById('cfg-branch').value = cfg.branch;
+
+        await checkGitHub();
+
+        // Charge depuis GitHub, sinon depuis localStorage
+        await loadEventsFromGH();
+        await loadTracksFromGH();
+    }
+
+    // ── GITHUB ──
+    function ghHeaders() {
+        const cfg = getConfig();
+        return {
+            'Authorization': 'token ' + cfg.token,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+        };
+    }
+
+    function ghFileUrl(filename) {
+        const cfg = getConfig();
+        return `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${filename}`;
+    }
+
+    async function checkGitHub() {
+        const cfg = getConfig();
+        if (!cfg.user || !cfg.repo || !cfg.token) {
+            setStatus('soirees', 'warn', 'GitHub non configure — sauvegarde locale uniquement.');
+            setStatus('musiques', 'warn', 'GitHub non configure — sauvegarde locale uniquement.');
+            return;
+        }
+        try {
+            const res = await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}`, { headers: ghHeaders() });
+            if (res.ok) {
+                setStatus('soirees', 'ok', `Connecte a ${cfg.user}/${cfg.repo}`);
+                setStatus('musiques', 'ok', `Connecte a ${cfg.user}/${cfg.repo}`);
+            } else {
+                setStatus('soirees', 'err', 'Erreur GitHub : token invalide ou repo introuvable.');
+                setStatus('musiques', 'err', 'Erreur GitHub : token invalide ou repo introuvable.');
+            }
+        } catch(e) {
+            setStatus('soirees', 'warn', 'GitHub inaccessible — sauvegarde locale activee.');
+            setStatus('musiques', 'warn', 'GitHub inaccessible — sauvegarde locale activee.');
+        }
+    }
+
+    function setStatus(key, state, msg) {
+        const dot = document.getElementById('dot-' + key);
+        dot.className = 'status-dot';
+        if (state === 'ok')   dot.classList.add('ok');
+        if (state === 'warn') dot.classList.add('warn');
+        if (state === 'err')  dot.classList.add('err');
+        document.getElementById('msg-' + key).textContent = msg;
+    }
+
+    async function getFileSha(filename) {
+        try {
+            const res = await fetch(ghFileUrl(filename), { headers: ghHeaders() });
+            if (!res.ok) return null;
+            const data = await res.json();
+            return data.sha || null;
+        } catch(e) { return null; }
+    }
+
+    async function pushToGitHub(filename, content, commitMsg) {
+        const cfg = getConfig();
+        if (!cfg.user || !cfg.repo || !cfg.token) return false;
+
+        const sha = await getFileSha(filename);
+        const body = {
+            message: commitMsg,
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+            branch: cfg.branch
+        };
+        if (sha) body.sha = sha;
+
+        try {
+            const res = await fetch(ghFileUrl(filename), {
+                method: 'PUT',
+                headers: ghHeaders(),
+                body: JSON.stringify(body)
+            });
+            if (res.ok) return true;
+            const err = await res.json();
+            console.warn('Erreur GitHub :', err.message);
+            return false;
+        } catch(e) {
+            console.warn('Erreur reseau GitHub :', e.message);
+            return false;
+        }
+    }
+
+    async function fetchFromGitHub(filename) {
+        const cfg = getConfig();
+        if (!cfg.user || !cfg.repo || !cfg.token) return null;
+        try {
+            const res = await fetch(ghFileUrl(filename), { headers: ghHeaders() });
+            if (!res.ok) return null;
+            const data = await res.json();
+            const decoded = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+            return JSON.parse(decoded);
+        } catch(e) { return null; }
+    }
+
+    // ── EVENTS ──
+    async function loadEventsFromGH() {
+        // 1. Essayer GitHub
+        const data = await fetchFromGitHub('events.json');
+        if (data && data.events) {
+            eventsData = data.events;
+        } else {
+            // 2. Fallback : localStorage
+            const local = localStorage.getItem('tm_events');
+            eventsData = local ? JSON.parse(local) : [];
+        }
+        renderEventsList();
+    }
+
+    function renderEventsList() {
+        const list = document.getElementById('events-list');
+        if (!eventsData.length) {
+            list.innerHTML = '<p style="color:#333;font-size:13px;">Aucune soiree. Ajoutez-en une ci-dessus.</p>';
+            return;
+        }
+        list.innerHTML = eventsData.map((e, i) => `
+            <div class="item-row">
+                <div class="item-num">${String(i+1).padStart(2,'0')}</div>
+                <div>
+                    <div class="item-main">${e.titre}</div>
+                    <div class="item-sub">${e.jour} ${e.mois} — ${e.lieu}</div>
+                </div>
+                <span class="item-tag">${e.tag}</span>
+                <div class="item-actions">
+                    <button class="btn btn-sm btn-danger" onclick="deleteEvent(${i})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function addEvent() {
+        const jour  = document.getElementById('e-jour').value.trim();
+        const mois  = document.getElementById('e-mois').value.trim();
+        const titre = document.getElementById('e-titre').value.trim();
+        const lieu  = document.getElementById('e-lieu').value.trim();
+        const tag   = document.getElementById('e-tag').value.trim();
+
+        if (!titre) { alert('Le titre est obligatoire.'); return; }
+
+        eventsData.push({ jour: jour || 'TBA', mois: mois || '2025', titre, lieu: lieu || "Cotes d'Armor", tag: tag || 'A venir' });
+        renderEventsList();
+
+        ['e-jour','e-mois','e-titre','e-lieu','e-tag'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    function deleteEvent(i) {
+        if (!confirm('Supprimer cette soiree ?')) return;
+        eventsData.splice(i, 1);
+        renderEventsList();
+    }
+
+    async function saveEvents(evt) {
+        const btn = evt.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.textContent = 'Sauvegarde en cours...';
+        btn.disabled = true;
+
+        // TOUJOURS sauvegarder en localStorage (visible immediatement sur index.html)
+        localStorage.setItem('tm_events', JSON.stringify(eventsData));
+
+        // Tenter GitHub en parallele
+        const ghOk = await pushToGitHub('events.json', { events: eventsData }, '[Admin] Mise a jour soirees');
+
+        if (ghOk) {
+            alert('Soirees sauvegardees sur GitHub et localement !');
+        } else {
+            alert('Soirees sauvegardees localement.\nIndex.html les affichera immediatement.\n(GitHub non disponible)');
+        }
+
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+    }
+
+    function resetEvents() {
+        if (!confirm('Supprimer TOUTES les soirees ? Cette action est irreversible une fois sauvegardee.')) return;
+        eventsData = [];
+        renderEventsList();
+    }
+
+    // ── TRACKS ──
+    async function loadTracksFromGH() {
+        const data = await fetchFromGitHub('music.json');
+        if (data && data.tracks) {
+            tracksData = data.tracks;
+        } else {
+            const local = localStorage.getItem('tm_tracks');
+            tracksData = local ? JSON.parse(local) : [];
+        }
+        renderTracksList();
+    }
+
+    function renderTracksList() {
+        const list = document.getElementById('tracks-list');
+        if (!tracksData.length) {
+            list.innerHTML = '<p style="color:#333;font-size:13px;">Aucun track. Ajoutez-en un ci-dessus.</p>';
+            return;
+        }
+        list.innerHTML = tracksData.map((t, i) => `
+            <div class="item-row">
+                <div class="item-num">${String(i+1).padStart(2,'0')}</div>
+                <div>
+                    <div class="item-main">${t.titre}</div>
+                    <div class="item-sub">${t.genre || ''} ${t.annee ? '— ' + t.annee : ''} ${t.duree ? '— ' + t.duree : ''}</div>
+                </div>
+                <span class="item-tag">${t.lien ? 'Avec lien' : 'Sans lien'}</span>
+                <div class="item-actions">
+                    <button class="btn btn-sm btn-danger" onclick="deleteTrack(${i})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function addTrack() {
+        const titre = document.getElementById('t-titre').value.trim();
+        const genre = document.getElementById('t-genre').value.trim();
+        const annee = document.getElementById('t-annee').value.trim();
+        const duree = document.getElementById('t-duree').value.trim();
+        const lien  = document.getElementById('t-lien').value.trim();
+
+        if (!titre) { alert('Le titre est obligatoire.'); return; }
+
+        tracksData.push({ titre, genre, annee, duree, lien });
+        renderTracksList();
+
+        ['t-titre','t-genre','t-annee','t-duree','t-lien'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    function deleteTrack(i) {
+        if (!confirm('Supprimer ce track ?')) return;
+        tracksData.splice(i, 1);
+        renderTracksList();
+    }
+
+    function resetTracks() {
+        if (!confirm('Supprimer TOUS les tracks ? Cette action est irreversible une fois sauvegardee.')) return;
+        tracksData = [];
+        renderTracksList();
+    }
+
+    async function saveTracks(evt) {
+        const btn = evt.target.closest('button');
+        const originalHTML = btn.innerHTML;
+        btn.textContent = 'Sauvegarde en cours...';
+        btn.disabled = true;
+
+        // TOUJOURS sauvegarder en localStorage
+        localStorage.setItem('tm_tracks', JSON.stringify(tracksData));
+
+        const ghOk = await pushToGitHub('music.json', { tracks: tracksData }, '[Admin] Mise a jour musiques');
+
+        if (ghOk) {
+            alert('Musiques sauvegardees sur GitHub et localement !');
+        } else {
+            alert('Musiques sauvegardees localement.\nIndex.html et music.html les afficheront immediatement.\n(GitHub non disponible)');
+        }
+
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+    }
+</script>
+
+</body>
+</html>

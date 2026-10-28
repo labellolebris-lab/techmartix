@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Martix</title>
+    <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("js")</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --cobalt: #000;
+            --midnight: #000;
+            --bone: #fff;
+            --signal: #fff;
+            --muted-dark: #555;
+            --muted-light: rgba(255, 255, 255, 0.65);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--midnight);
+            color: var(--bone);
+            font-family: 'Barlow', sans-serif;
+            overflow-x: hidden;
+        }
+
+        a:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+
+        .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: #000;
+            border-bottom: 1px solid #222;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-logo-small { height: 30px; width: auto; }
+
+        .nav-brand-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            letter-spacing: 0.04em;
+            color: var(--bone);
+            text-transform: uppercase;
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--bone);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.04em;
+            padding: 6px 18px;
+            border: 2px solid var(--bone);
+            border-radius: 0;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active { background: var(--bone); color: var(--cobalt); }
+
+        /* ── HERO ── */
+        .hero-wrap {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100svh;
+            background: #000;
+            display: flex;
+            align-items: center;
+            padding-top: 60px;
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 64px 32px;
+            width: 100%;
+        }
+
+        .hero-eyebrow {
+            font-weight: 500;
+            font-size: 16px;
+            color: var(--muted-light);
+            margin-bottom: 28px;
+        }
+
+        .hero-logo { display: block; height: 72px; width: auto; margin-bottom: 28px; }
+
+        h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: clamp(96px, 17vw, 230px);
+            line-height: 0.84;
+            text-transform: uppercase;
+            color: var(--bone);
+            margin-bottom: 40px;
+            animation: wipe 1.2s cubic-bezier(.77, 0, .18, 1) both;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            color: var(--bone);
+            max-width: 420px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .hero-cta, .btn-insta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: 0.03em;
+            padding: 16px 32px;
+            border-radius: 0;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .hero-cta { background: var(--signal); color: var(--midnight); }
+        .hero-cta:hover { background: #000; color: #fff; outline: 2px solid #fff; }
+
+        /* Le disque : seul element decoratif de la page */
+        .vinyl {
+            position: absolute;
+            right: -14vw;
+            top: 50%;
+            width: min(66vw, 780px);
+            aspect-ratio: 1;
+            translate: 0 -50%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(circle, #0a0a0a 0 2px, #262626 2px 4px);
+            box-shadow: 0 0 0 2px #333;
+            display: grid;
+            place-items: center;
+            animation: spin 22s linear infinite;
+        }
+
+        .vinyl span {
+            position: relative;
+            width: 28%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: var(--signal);
+            color: var(--midnight);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: clamp(14px, 2.6vw, 34px);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .vinyl span::after {
+            content: '';
+            position: absolute;
+            width: 8%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: var(--midnight);
+            top: 10%;
+        }
+
+        @keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+        @keyframes spin { to { rotate: 360deg; } }
+
+        /* ── SECTIONS ── */
+        h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: clamp(56px, 9vw, 120px);
+            line-height: 0.88;
+            text-transform: uppercase;
+            margin-bottom: 48px;
+        }
+
+        .section-label {
+            font-weight: 500;
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+
+        /* ── ABOUT ── */
+        .about { background: #000; color: #fff; border-top: 1px solid #222; padding: 110px 0; }
+        .about .section-label { color: var(--muted-light); }
+        .about h2 { color: #fff; }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            color: var(--muted-light);
+            line-height: 1.7;
+            margin-bottom: 18px;
+            max-width: 52ch;
+        }
+
+        .about-text p strong { color: #fff; font-weight: 500; }
+
+        .stats-row { display: flex; margin-top: 44px; border-top: 3px solid #fff; }
+        .stat { flex: 1; padding: 22px 0; }
+        .stat:not(:first-child) { padding-left: 24px; border-left: 1px solid #333; }
+
+        .stat-num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 72px;
+            color: #fff;
+            line-height: 1;
+            display: block;
+        }
+
+        .stat-lbl { font-size: 15px; color: var(--muted-light); }
+
+        /* ── PHOTOS (duotone cobalt) ── */
+        .photos-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; }
+
+        .photo-block { position: relative; overflow: hidden; background: var(--cobalt); }
+
+        .photo-block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            min-height: 380px;
+            filter: grayscale(100%) contrast(1.05);
+            transition: transform 0.7s ease;
+        }
+
+        .photo-block:hover img { transform: scale(1.04); }
+
+        .photo-placeholder {
+            min-height: 380px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--bone);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+        }
+
+        .photo-placeholder i { font-size: 24px; }
+
+        /* ── AGENDA ── */
+        .agenda { background: #000; border-top: 1px solid #222; padding: 110px 0; }
+        .agenda .section-label { color: var(--signal); }
+
+        .event-list { display: flex; flex-direction: column; }
+
+        .event-item {
+            display: grid;
+            grid-template-columns: 120px 1fr auto;
+            align-items: center;
+            gap: 40px;
+            padding: 28px 0;
+            border-bottom: 2px dashed rgba(242, 240, 255, 0.28);
+        }
+
+        .event-item:first-child { border-top: 2px dashed rgba(242, 240, 255, 0.28); }
+
+        .event-date-block {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 64px;
+            line-height: 0.95;
+            color: var(--signal);
+        }
+
+        .event-date-block small {
+            display: block;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted-light);
+            margin-top: 4px;
+        }
+
+        .event-info h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 32px;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .event-info p { font-size: 16px; color: var(--muted-light); }
+
+        .event-tag {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--midnight);
+            background: var(--signal);
+            padding: 6px 18px;
+            border-radius: 0;
+        }
+
+        /* ── INSTA ── */
+        .insta-block { background: #000; color: #fff; border-top: 1px solid #222; padding: 120px 0; }
+        .insta-block h2 { margin-bottom: 20px; }
+        .insta-block p { font-size: 18px; color: var(--muted-light); max-width: 420px; line-height: 1.6; margin-bottom: 36px; }
+
+        .btn-insta { background: #fff; color: #000; }
+        .btn-insta:hover { background: #000; color: #fff; outline: 2px solid #fff; }
+
+        /* ── FOOTER ── */
+        footer { background: #000; border-top: 1px solid #222; padding: 36px 0; }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+
+        .footer-copy { font-size: 15px; color: var(--muted-light); }
+
+        .footer-insta { color: var(--muted-light); text-decoration: none; font-size: 15px; transition: color 0.2s; }
+        .footer-insta:hover { color: var(--signal); }
+
+
+        /* ── CINEMATIQUE DE SCROLL ── */
+        #progress { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: #fff; transform: scaleX(0); transform-origin: 0 50%; z-index: 1100; }
+        nav { transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
+        nav.hide { transform: translateY(-100%); }
+
+        /* entree du hero */
+        @keyframes up { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: none; } }
+        .hero-inner > :not(h1) { animation: up 1.1s cubic-bezier(.16, 1, .3, 1) both; }
+        .hero-eyebrow { animation-delay: .1s !important; }
+        .hero-logo { animation-delay: .25s !important; }
+        .hero-sub { animation-delay: .9s !important; }
+        .hero-cta, .cta-row { animation-delay: 1.05s !important; }
+        .hero-inner, .vinyl { will-change: transform; }
+        .vinyl { translate: 0 calc(-50% + var(--vy, 0px)); }
+
+        /* bandeau defilant lie au scroll */
+        .marquee { background: #000; border-top: 1px solid #222; overflow: hidden; padding: 26px 0; }
+        .marquee-track { display: flex; width: max-content; will-change: transform; }
+        .marquee-group { display: flex; align-items: center; gap: 36px; padding-right: 36px; flex-shrink: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(48px, 8vw, 110px); line-height: 1; text-transform: uppercase; white-space: nowrap; }
+        .marquee-group .o { color: transparent; -webkit-text-stroke: 2px #fff; }
+        .marquee-group i { font-style: normal; color: var(--muted-dark); }
+
+        /* reveals (actifs uniquement si JS + motion autorisee) */
+        .js .rv { opacity: 0; transform: translateY(44px); transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--d, 0s); }
+        .js .event-item.rv { transform: translateX(-48px); }
+        .js .rv.in { opacity: 1; transform: none; }
+
+        .js h2 .ln { display: block; overflow: hidden; padding: .05em 0; margin: -.05em 0; }
+        .js h2 .ln > span { display: block; transform: translateY(110%); transition: transform 1.1s cubic-bezier(.16, 1, .3, 1); transition-delay: calc(var(--i) * .12s); }
+        .js h2.in .ln > span { transform: none; }
+
+        .js .photo-block { opacity: 0; transform: translateY(44px); transition: opacity 1s cubic-bezier(.16, 1, .3, 1), transform 1s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--d, 0s); }
+        .js .photo-block.in { opacity: 1; transform: none; }
+        .photo-block img { scale: 1.18; will-change: translate; }
+
+        .js .stats-row { border-top-color: transparent; position: relative; }
+        .js .stats-row::before { content: ''; position: absolute; top: -3px; left: 0; width: 100%; height: 3px; background: #fff; transform: scaleX(0); transform-origin: 0 50%; transition: transform 1.4s cubic-bezier(.77, 0, .18, 1) .2s; }
+        .js .stats-row.in::before { transform: scaleX(1); }
+
+
+        /* boutons reseaux : compacts, cote a cote */
+        .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+        .hero-cta, .btn-insta { width: 52px; height: 52px; padding: 0; justify-content: center; font-size: 24px; }
+        .nav-links a { font-size: 18px; padding: 0; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; }
+        .nav-links { gap: 6px; }
+        .footer-insta + .footer-insta { margin-left: 4px; }
+
+
+        /* logos seuls : pas de cadre, pas d'animation */
+        .hero-cta, .btn-insta,
+        .nav-links a[aria-label] { background: none; border: 0; outline: 0; color: #fff; transition: none; }
+        .hero-cta:hover, .btn-insta:hover,
+        .nav-links a[aria-label]:hover { background: none; color: #fff; outline: 0; opacity: 1; transform: none; }
+        .hero-cta, .btn-insta { width: auto; height: auto; padding: 6px; font-size: 30px; }
+        .cta-row { gap: 18px; animation: none !important; opacity: 1; transform: none; }
+        .footer-insta[aria-label] { font-size: 22px; transition: none; }
+        .footer-insta[aria-label]:hover { color: var(--muted-light); }
+        .footer-insta:not([aria-label]) { font-size: 15px; }
+
+        /* bouton Contact agrandi */
+        .nav-links a:not([aria-label]) { width: auto; height: auto; padding: 10px 30px; font-size: 22px; }
+
+        /* footer centre */
+        .footer-inner { justify-content: center; text-align: center; gap: 28px; }
+        a:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .wrap, .hero-inner, .nav-container, .footer-inner { padding-left: 20px; padding-right: 20px; }
+            .nav-brand-name { display: none; }
+            .about, .agenda, .insta-block { padding: 72px 0; }
+            .about-grid { grid-template-columns: 1fr; gap: 48px; }
+            .photos-grid { grid-template-columns: 1fr; }
+            .event-item { grid-template-columns: 90px 1fr; gap: 20px; }
+            .event-date-block { font-size: 48px; }
+            .event-tag { display: none; }
+            .footer-inner { flex-direction: column; align-items: center; }
+            .vinyl { width: 90vw; right: -42vw; top: 62%; opacity: 0.55; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            h1, .vinyl { animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress" aria-hidden="true"></div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <img src="logo.png" alt="Tech Martix" class="nav-logo-small">
+                <span class="nav-brand-name">Tech Martix</span>
+            </a>
+            <div class="nav-links">
+                <a href="https://www.instagram.com/dj_techmartix/" target="_blank" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@techmartix" target="_blank" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+                <a href="help.html" class="active">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-wrap">
+        <div class="vinyl" aria-hidden="true"><span>Tech<br>Martix</span></div>
+        <div class="hero-inner">
+            <div class="hero-eyebrow">DJ — Cotes d'Armor, Bretagne</div>
+            <img src="logo.png" alt="Tech Martix" class="hero-logo">
+            <h1>TECH<br>MARTIX</h1>
+            <p class="hero-sub">
+                Soirees electroniques dans les clubs des Cotes d'Armor.<br>Des sets construits pour la nuit.
+            </p>
+            <div class="cta-row">
+                <a href="https://www.instagram.com/dj_techmartix/" target="_blank" class="hero-cta">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@techmartix" target="_blank" class="hero-cta" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="marquee" aria-hidden="true"><div class="marquee-track"><div class="marquee-group"><span>Tech House</span><i>/</i><span class="o">Electro</span><i>/</i><span>Club</span><i>/</i><span class="o">Cotes d'Armor</span><i>/</i><span>Tech House</span><i>/</i><span class="o">Electro</span><i>/</i><span>Club</span><i>/</i><span class="o">Cotes d'Armor</span><i>/</i></div><div class="marquee-group"><span>Tech House</span><i>/</i><span class="o">Electro</span><i>/</i><span>Club</span><i>/</i><span class="o">Cotes d'Armor</span><i>/</i><span>Tech House</span><i>/</i><span class="o">Electro</span><i>/</i><span>Club</span><i>/</i><span class="o">Cotes d'Armor</span><i>/</i></div></div></div>
+
+    <!-- A PROPOS -->
+    <section class="about">
+        <div class="wrap">
+            <div class="section-label">A propos</div>
+            <div class="about-grid">
+                <div>
+                    <h2>QUI EST<br>TECH<br>MARTIX</h2>
+                    <div class="about-text">
+                        <p><strong>Tech Martix</strong>, est un DJ présent dans les Cotes d'Armor, là pour animer vos soirees.</p>
+                        <p>Specialiste des soirees en boite de nuit, il mixe des sets construits pour la piste de danse — tech house, electro, et au-dela.</p>
+                        <p>Chaque soiree est une experience :  une ambiance, une energie propre. Suivez-moi sur Insta/TikTok</p>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat">
+                            <span class="stat-num">22</span>
+                            <span class="stat-lbl">Cotes d'Armor</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-num">100%</span>
+                            <span class="stat-lbl">Bonne musique</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="photos-grid">
+                    <div class="photo-block">
+                        <img src="photo.png" alt="Tech Martix" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="photo-placeholder" style="display:none;"><i class="fa-regular fa-image"></i>photo.png</div>
+                    </div>
+                    <div class="photo-block">
+                        <img src="photo2.png" alt="Tech Martix" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="photo-placeholder" style="display:none;"><i class="fa-regular fa-image"></i>photo2.png</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOIREES -->
+    <section class="agenda">
+        <div class="wrap">
+            <div class="section-label">Agenda</div>
+            <h2>SOIREES<br>A VENIR</h2>
+            <div class="event-list" id="event-list">
+                <div class="event-item">
+                    <div class="event-date-block">—<small>2026</small></div>
+                    <div class="event-info">
+                        <h3>Chargement...</h3>
+                        <p>Cotes d'Armor</p>
+                    </div>
+                    <span class="event-tag">A venir</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTA -->
+    <section class="insta-block">
+        <div class="wrap">
+            <h2>RESTEZ<br>CONNECTES</h2>
+            <p>L'agenda, les photos des soirees et les coulisses sur Instagram et TikTok.</p>
+            <div class="cta-row">
+                <a href="https://www.instagram.com/dj_techmartix/" target="_blank" class="btn-insta" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@techmartix" target="_blank" class="btn-insta" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <p class="footer-copy">2026 — Tech Martix</p>
+            <a href="mentions-legales.html" class="footer-insta">Mentions légales</a>
+            <a href="https://www.instagram.com/dj_techmartix/" target="_blank" class="footer-insta" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.tiktok.com/@techmartix" target="_blank" class="footer-insta" aria-label="TikTok">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // ── Charge les soirees ──
+        // Priorite : 1) localStorage (modifs admin) > 2) events.json local > 3) placeholder
+        async function loadEvents() {
+            const localData = localStorage.getItem('tm_events');
+            if (localData) {
+                try {
+                    const events = JSON.parse(localData);
+                    if (events && events.length > 0) {
+                        renderEvents(events);
+                        return;
+                    }
+                } catch(e) {}
+            }
+
+            try {
+                const res = await fetch('events.json?t=' + Date.now());
+                if (!res.ok) throw new Error('not found');
+                const data = await res.json();
+                renderEvents(data.events || []);
+            } catch(e) {
+                renderEvents([
+                    { jour: 'TBA', mois: '2026', titre: 'Prochaine date', lieu: "Cotes d'Armor — NON DEFINI", tag: 'A venir' }
+                ]);
+            }
+        }
+
+        function renderEvents(events) {
+            const list = document.getElementById('event-list');
+            if (!events.length) {
+                list.innerHTML = '<div class="event-item"><div class="event-date-block">TBA<small>2026</small></div><div class="event-info"><h3>Aucune date annoncee</h3><p>Restez connectes sur Instagram</p></div><span class="event-tag">A venir</span></div>';
+                return;
+            }
+            list.innerHTML = events.map(e => `
+                <div class="event-item">
+                    <div class="event-date-block">${e.jour}<small>${e.mois}</small></div>
+                    <div class="event-info">
+                        <h3>${e.titre}</h3>
+                        <p>${e.lieu}</p>
+                    </div>
+                    <span class="event-tag">${e.tag}</span>
+                </div>
+            `).join('');
+        }
+
+        // ── Charge le nombre de tracks (si l'element existe) ──
+        async function loadTrackCount() {
+            const el = document.getElementById('track-count');
+            if (!el) return;
+            const localData = localStorage.getItem('tm_tracks');
+            if (localData) {
+                try {
+                    const tracks = JSON.parse(localData);
+                    if (tracks && tracks.length > 0) { el.textContent = tracks.length; return; }
+                } catch(e) {}
+            }
+            try {
+                const res = await fetch('music.json?t=' + Date.now());
+                const data = await res.json();
+                el.textContent = (data.tracks || []).length || '—';
+            } catch(e) {}
+        }
+
+        loadEvents();
+        loadTrackCount();
+
+        // ── Cinematique de scroll ──
+        (function () {
+            if (!document.documentElement.classList.contains('js')) return;
+
+            document.querySelectorAll('h2').forEach(h => {
+                h.innerHTML = h.innerHTML.split(/<br\s*\/?>/i).map((t, i) => `<span class="ln"><span style="--i:${i}">${t.trim()}</span></span>`).join('');
+                h.classList.add('split');
+            });
+            document.querySelectorAll('.section-label, .about-text p, .stats-row, .insta-block p').forEach((el, i) => {
+                el.classList.add('rv');
+                el.style.setProperty('--d', (el.matches('.about-text p') ? [...el.parentNode.children].indexOf(el) * .12 : 0) + 's');
+            });
+            document.querySelectorAll('.photo-block').forEach((el, i) => el.style.setProperty('--d', i * .25 + 's'));
+
+            function countUp(row) {
+                row.querySelectorAll('.stat-num').forEach(n => {
+                    const m = n.textContent.match(/^(\d+)(.*)$/); if (!m) return;
+                    const to = +m[1], suf = m[2], t0 = performance.now();
+                    (function f(t) {
+                        const k = Math.min((t - t0) / 1600, 1);
+                        n.textContent = Math.round(to * (1 - Math.pow(1 - k, 4))) + suf;
+                        if (k < 1) requestAnimationFrame(f);
+                    })(t0);
+                });
+            }
+
+            const io = new IntersectionObserver(es => es.forEach(e => {
+                if (!e.isIntersecting) return;
+                e.target.classList.add('in');
+                if (e.target.classList.contains('stats-row')) countUp(e.target);
+                io.unobserve(e.target);
+            }), { threshold: .15, rootMargin: '0px 0px -8% 0px' });
+
+            function observeReveals(scope) {
+                scope.querySelectorAll('.event-item:not(.rv)').forEach((el, i) => {
+                    el.classList.add('rv'); el.style.setProperty('--d', i * .1 + 's');
+                });
+                scope.querySelectorAll('.rv:not(.in), h2.split:not(.in), .photo-block:not(.in)').forEach(el => io.observe(el));
+            }
+            observeReveals(document);
+            const list = document.getElementById('event-list');
+            new MutationObserver(() => observeReveals(list)).observe(list, { childList: true });
+
+            // Scroll : progression, parallax hero, marquee, photos, nav
+            const hero = document.querySelector('.hero-inner'), vinyl = document.querySelector('.vinyl'),
+                  bar = document.getElementById('progress'), nav = document.querySelector('nav'),
+                  track = document.querySelector('.marquee-track'),
+                  imgs = [...document.querySelectorAll('.photo-block img')];
+            let last = 0, ticking = false;
+
+            function update() {
+                ticking = false;
+                const y = scrollY, h = innerHeight, max = document.documentElement.scrollHeight - h;
+                bar.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+
+                const p = Math.min(y / h, 1);
+                if (p < 1) {
+                    hero.style.transform = `translate3d(0, ${p * 110}px, 0)`;
+                    hero.style.opacity = Math.max(0, 1 - p * 1.25);
+                    vinyl.style.setProperty('--vy', (p * -90) + 'px');
+                    vinyl.style.scale = 1 + p * .3;
+                }
+
+                track.style.transform = `translate3d(${-((y * .6) % (track.scrollWidth / 2))}px, 0, 0)`;
+
+                imgs.forEach(img => {
+                    const r = img.parentNode.getBoundingClientRect();
+                    const k = (r.top + r.height / 2 - h / 2) / h;
+                    img.style.translate = `0 ${k * -30}px`;
+                });
+
+                if (y > last + 4 && y > 120) nav.classList.add('hide');
+                else if (y < last - 4) nav.classList.remove('hide');
+                last = y;
+            }
+            addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+            addEventListener('resize', update);
+            update();
+        })();
+    </script>
+</body>
+</html>
