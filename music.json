@@ -1,0 +1,11 @@
+{
+  "tracks": [
+    {
+      "titre": "TEST",
+      "genre": "TEST",
+      "annee": "2026",
+      "duree": "2:01",
+      "lien": "https://adist.com/video1.mp4"
+    }
+  ]
+}
