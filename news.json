@@ -1,12 +1,3 @@
 {
-  "news": [
-    {
-      "id": "mvveil8n",
-      "date": "2026-10-30",
-      "titre": "Yo en soirée vec des poubelles",
-      "texte": "Venez nombreux",
-      "lien": "",
-      "image": "news-img/mvveil8n.gif"
-    }
-  ]
+  "news": []
 }
