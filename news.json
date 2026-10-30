@@ -14,6 +14,14 @@
       "texte": "Test 1",
       "lien": "",
       "image": "news-img/mvv3o9d7.jpg"
+    },
+    {
+      "id": "mvv4uhs1",
+      "date": "2026-10-30",
+      "titre": "TEST VID",
+      "texte": "TEST VID",
+      "lien": "",
+      "video": "news-video/mvv4uhs1.mp4"
     }
   ]
 }
